@@ -18,6 +18,7 @@ public class TabController {
 
     @PostMapping
     public ResponseEntity<byte[]> createTab(@RequestBody String url) throws IOException, WriterException {
+        // todo refactor to service
         QRGenerator generator = new QRGenerator();
         URI location = URI.create("fake-location");
         byte[] qrImage =  generator.generateQRCode(url, 300, 300);

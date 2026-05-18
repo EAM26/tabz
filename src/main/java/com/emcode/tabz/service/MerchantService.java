@@ -9,4 +9,5 @@ public interface MerchantService {
 
     Long createMerchant(MerchantRequest merchantRequest);
 
+
 }

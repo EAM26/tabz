@@ -1,5 +1,6 @@
 package com.emcode.tabz.controller;
 
+import com.emcode.tabz.service.TabService;
 import com.emcode.tabz.util.QRGenerator;
 import com.google.zxing.WriterException;
 import org.springframework.http.MediaType;
@@ -14,10 +15,15 @@ import java.net.URI;
 @RequestMapping("/api/tab")
 public class TabController {
 
+    private final TabService tabService;
 
-    @PostMapping("/{merchantId}")
-    public String createTab(@RequestBody MultipartFile multipartFile, @PathVariable Long merchantId) {
-        return "string";
+    public TabController(TabService tabService) {
+        this.tabService = tabService;
+    }
+
+    @PostMapping(value = "/{merchantId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String createTab(@RequestPart("file") MultipartFile file, @PathVariable Long merchantId) {
+        return tabService.createTab(file, merchantId);
     }
     @PostMapping
     public ResponseEntity<byte[]> createTabAndQR(@RequestBody String url) throws IOException, WriterException {

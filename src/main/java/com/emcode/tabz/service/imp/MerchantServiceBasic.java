@@ -8,6 +8,7 @@ import com.emcode.tabz.service.MerchantService;
 import com.emcode.tabz.util.MerchantMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -38,4 +39,5 @@ public class MerchantServiceBasic implements MerchantService {
         Merchant savedMerchant = merchantRepo.save(merchantMapper.mapToEntity(merchantRequest));
         return savedMerchant.getId(); // todo: change returntype to response
     }
+
 }

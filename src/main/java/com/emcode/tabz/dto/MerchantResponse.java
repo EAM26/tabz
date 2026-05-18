@@ -4,6 +4,7 @@ public record MerchantResponse(
         Long id,
         String name,
         String email,
-        String token   // todo remove token
+        String token,  // todo remove token
+        boolean active
 ) {
 }

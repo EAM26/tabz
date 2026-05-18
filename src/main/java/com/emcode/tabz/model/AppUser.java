@@ -1,10 +1,9 @@
 package com.emcode.tabz.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -18,5 +17,6 @@ public class AppUser {
     private String email;
     private String password;
 
-
+    @OneToMany(mappedBy = "appUser", orphanRemoval = true)
+    private List<Tab> tabs;
 }

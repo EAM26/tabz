@@ -13,7 +13,8 @@ public class MerchantMapper {
                 merchant.getId(),
                 merchant.getName(),
                 merchant.getEmail(),
-                merchant.getToken()
+                merchant.getToken(),
+                merchant.isActive()
         );
     }
 
@@ -22,6 +23,7 @@ public class MerchantMapper {
                 .name(request.name())
                 .email(request.email())
                 .token(request.token())
+                .active(request.active())
                 .build();
     }
 }

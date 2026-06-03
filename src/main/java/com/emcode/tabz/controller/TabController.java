@@ -22,9 +22,10 @@ public class TabController {
     }
 
     @PostMapping(value = "/{merchantId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String createTab(@RequestPart("file") MultipartFile file, @PathVariable Long merchantId) {
-        return tabService.createTab(file, merchantId);
+    public ResponseEntity<String> createTab(@RequestParam("file") MultipartFile file, @PathVariable Long merchantId) {
+        return ResponseEntity.ok(tabService.createTab(file, merchantId));
     }
+
     @PostMapping
     public ResponseEntity<byte[]> createTabAndQR(@RequestBody String url) throws IOException, WriterException {
         // todo refactor to service

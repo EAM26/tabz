@@ -1,9 +1,9 @@
 package com.emcode.tabz.repository;
 
-import com.emcode.tabz.model.Merchant;
+import com.emcode.tabz.model.Shop;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MerchantRepo extends JpaRepository<Merchant, Long> {
+public interface ShopRepo extends JpaRepository<Shop, Long> {
 }

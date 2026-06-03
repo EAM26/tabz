@@ -15,11 +15,11 @@ public class LocalFileStorage implements FileStorageManager {
 
     private static final Path STORAGE_LOCATION = Path.of("C:/tabz-data/storage");
     @Override
-    public String storeFile(Long tabId, Long merchantId, MultipartFile file) {
+    public String storeFile(Long tabId, Long shopId, MultipartFile file) {
 
         try {
             Files.createDirectories(STORAGE_LOCATION);
-            String fileName = merchantId + "_" + tabId + ".pdf";
+            String fileName = shopId + "_" + tabId + ".pdf";
             Path targetLocation = STORAGE_LOCATION.resolve(fileName);
 
             InputStream inputStream = file.getInputStream();

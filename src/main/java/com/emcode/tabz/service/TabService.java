@@ -4,5 +4,5 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface TabService {
 
-    String createTab(MultipartFile multipartFile, Long merchantId);
+    String createTab(MultipartFile multipartFile, Long shopId);
 }

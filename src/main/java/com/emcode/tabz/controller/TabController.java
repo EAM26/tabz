@@ -21,9 +21,9 @@ public class TabController {
         this.tabService = tabService;
     }
 
-    @PostMapping(value = "/{merchantId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> createTab(@RequestParam("file") MultipartFile file, @PathVariable Long merchantId) {
-        return ResponseEntity.ok(tabService.createTab(file, merchantId));
+    @PostMapping(value = "/{shopId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> createTab(@RequestParam("file") MultipartFile file, @PathVariable Long shopId) {
+        return ResponseEntity.ok(tabService.createTab(file, shopId));
     }
 
     @PostMapping

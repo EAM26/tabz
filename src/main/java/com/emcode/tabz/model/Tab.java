@@ -14,8 +14,8 @@ public class Tab {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "merchant_id")
-    private Merchant merchant;
+    @JoinColumn(name = "shop_id")
+    private Shop shop;
 
     @ManyToOne
     @JoinColumn(name = "app_user_id")

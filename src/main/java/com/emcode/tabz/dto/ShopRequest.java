@@ -1,10 +1,9 @@
 package com.emcode.tabz.dto;
 
-public record MerchantResponse(
-        Long id,
+public record ShopRequest(
         String name,
         String email,
-        String token,  // todo remove token
+        String token,// todo: remove and auto generate token
         boolean active
 ) {
 }

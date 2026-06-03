@@ -1,6 +1,7 @@
 package com.emcode.tabz.service.imp;
 
 import com.emcode.tabz.dto.UserRequest;
+import com.emcode.tabz.dto.UserResponse;
 import com.emcode.tabz.model.User;
 import com.emcode.tabz.repository.UserRepo;
 import com.emcode.tabz.service.UserService;
@@ -16,8 +17,9 @@ public class UserServiceBasic implements UserService {
     }
 
     @Override
-    public User createUser(UserRequest userRequest) {
-        return createEntity(userRequest);
+    public UserResponse createUser(UserRequest userRequest) {
+        User savedUser = userRepo.save(createEntity(userRequest));
+        return createResponse(savedUser);
     }
 
     private User createEntity(UserRequest req) {
@@ -27,7 +29,16 @@ public class UserServiceBasic implements UserService {
         System.out.println(user.getUsername());
         user.setEmail(req.email());
         user.setPassword(req.password());
-        return userRepo.save(user);
+        return user;
+    }
+
+    private UserResponse createResponse(User user) {
+        return new UserResponse(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getTabs()
+        );
     }
 
 }

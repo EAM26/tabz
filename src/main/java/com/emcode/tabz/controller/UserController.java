@@ -1,7 +1,7 @@
 package com.emcode.tabz.controller;
 
 import com.emcode.tabz.dto.UserRequest;
-import com.emcode.tabz.model.User;
+import com.emcode.tabz.dto.UserResponse;
 import com.emcode.tabz.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,14 +23,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody UserRequest userRequest) {
-        User user = userService.createUser(userRequest);
+    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
+        UserResponse response = userService.createUser(userRequest);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(user.getId())
+                .buildAndExpand(response.id())
                 .toUri();
 
-        return ResponseEntity.created(location).body(user);
+        return ResponseEntity.created(location).body(response);
     }
 }

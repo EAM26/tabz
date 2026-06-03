@@ -1,9 +1,9 @@
 package com.emcode.tabz.service;
 
 import com.emcode.tabz.dto.UserRequest;
-import com.emcode.tabz.model.User;
+import com.emcode.tabz.dto.UserResponse;
 
 public interface UserService {
 
-    User createUser(UserRequest userRequest);
+    UserResponse createUser(UserRequest userRequest);
 }

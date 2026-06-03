@@ -19,5 +19,5 @@ public class Tab {
 
     @ManyToOne
     @JoinColumn(name = "app_user_id")
-    private AppUser appUser;
+    private User user;
 }

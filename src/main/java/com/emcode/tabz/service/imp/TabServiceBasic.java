@@ -1,5 +1,6 @@
 package com.emcode.tabz.service.imp;
 
+import com.emcode.tabz.dto.ClaimRequest;
 import com.emcode.tabz.model.Shop;
 import com.emcode.tabz.model.Tab;
 import com.emcode.tabz.model.User;
@@ -41,12 +42,19 @@ public class TabServiceBasic implements TabService {
     }
 
     @Override
-    public String claim(Long userId, Long tabId) {
+    public String claim(Long tabId, ClaimRequest request) {
         Tab tab = findTab(tabId);
-        User user = findUser(userId);
-        tab.setUser(user);
+        if(request.claim()) {
+            User user = findUser(request.userId());
+            tab.setUser(user);
+            tab.setClaimed(true);
+        } else {
+            tab.setUser(null);
+            tab.setClaimed(false);
+        }
+
         tabRepo.save(tab);
-        return "ok, user claimed tab";
+        return tab.isClaimed() ? "Tab claimed" : "Tab unclaimed";
     }
 
     private User findUser(Long userId) {

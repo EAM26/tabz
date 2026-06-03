@@ -1,9 +1,12 @@
 package com.emcode.tabz.service.imp;
 
+import com.emcode.tabz.dto.ClaimRequest;
 import com.emcode.tabz.model.Shop;
 import com.emcode.tabz.model.Tab;
+import com.emcode.tabz.model.User;
 import com.emcode.tabz.repository.ShopRepo;
 import com.emcode.tabz.repository.TabRepo;
+import com.emcode.tabz.repository.UserRepo;
 import com.emcode.tabz.service.FileStorageManager;
 import com.emcode.tabz.service.TabService;
 import org.springframework.stereotype.Service;
@@ -18,11 +21,13 @@ public class TabServiceBasic implements TabService {
     private final FileStorageManager storageManager;
     private final TabRepo tabRepo;
     private final ShopRepo shopRepo;
+    private final UserRepo userRepo;
 
-    public TabServiceBasic(FileStorageManager storageManager, TabRepo tabRepo, ShopRepo shopRepo) {
+    public TabServiceBasic(FileStorageManager storageManager, TabRepo tabRepo, ShopRepo shopRepo, UserRepo userRepo) {
         this.storageManager = storageManager;
         this.tabRepo = tabRepo;
         this.shopRepo = shopRepo;
+        this.userRepo = userRepo;
     }
 
     @Override
@@ -32,7 +37,34 @@ public class TabServiceBasic implements TabService {
 
         String fileName = storageManager.storeFile(file);
 
-        return saveTab(shop, fileName).getFileName();
+        Tab savedTab =  saveTab(shop, fileName);
+        return createEndpointForClaim(savedTab.getId());
+    }
+
+    @Override
+    public String claim(Long tabId, ClaimRequest request) {
+        Tab tab = findTab(tabId);
+        if(request.claim()) {
+            User user = findUser(request.userId());
+            tab.setUser(user);
+            tab.setClaimed(true);
+        } else {
+            tab.setUser(null);
+            tab.setClaimed(false);
+        }
+
+        tabRepo.save(tab);
+        return tab.isClaimed() ? "Tab claimed" : "Tab unclaimed";
+    }
+
+    private User findUser(Long userId) {
+        return userRepo.findById(userId).orElseThrow(()
+                -> new NoSuchElementException("No user found with id " + userId));
+    }
+
+    private Tab findTab(Long tabId) {
+        return tabRepo.findById(tabId).orElseThrow(()
+                -> new NoSuchElementException("No tab found with id: " + tabId));
     }
 
     private Shop findShop(Long shopId) {
@@ -61,6 +93,10 @@ public class TabServiceBasic implements TabService {
         LocalDateTime createdAt = LocalDateTime.now();
         tab.setCreatedAt(createdAt);
         return tabRepo.save(tab);
+    }
+
+    private String createEndpointForClaim(Long tabId) {
+        return  "http://localhost:8080/api/tab/claim/" + tabId;
     }
 
 

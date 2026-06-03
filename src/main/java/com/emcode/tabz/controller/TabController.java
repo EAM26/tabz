@@ -1,5 +1,6 @@
 package com.emcode.tabz.controller;
 
+import com.emcode.tabz.dto.ClaimRequest;
 import com.emcode.tabz.service.TabService;
 import com.emcode.tabz.util.QRGenerator;
 import com.google.zxing.WriterException;
@@ -21,9 +22,14 @@ public class TabController {
         this.tabService = tabService;
     }
 
-    @PostMapping(value = "/{shopId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/shop/{shopId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> createTab(@RequestParam("file") MultipartFile file, @PathVariable Long shopId) {
         return ResponseEntity.ok(tabService.createTab(file, shopId));
+    }
+
+    @PostMapping(value = "/claim/{tabId}")
+    public ResponseEntity<String> claimTabByUser(@PathVariable Long tabId, @RequestBody ClaimRequest request) {
+        return ResponseEntity.ok(tabService.claim(tabId, request));
     }
 
     @PostMapping
@@ -31,13 +37,12 @@ public class TabController {
         // todo refactor to service
         QRGenerator generator = new QRGenerator();
         URI location = URI.create("fake-location");
-        byte[] qrImage =  generator.generateQRCode(url, 300, 300);
+        byte[] qrImage = generator.generateQRCode(url, 300, 300);
         return ResponseEntity
                 .created(location)
                 .contentType(MediaType.IMAGE_PNG)
                 .body(qrImage);
     }
-
 
 
 }

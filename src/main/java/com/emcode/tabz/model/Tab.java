@@ -15,6 +15,7 @@ public class Tab {
 
     private String fileName;
     private LocalDateTime createdAt;
+    private boolean claimed = false;
 
     @ManyToOne
     @JoinColumn(name = "shop_id")

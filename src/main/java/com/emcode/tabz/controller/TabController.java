@@ -26,6 +26,11 @@ public class TabController {
         return ResponseEntity.ok(tabService.createTab(file, shopId));
     }
 
+    @PostMapping(value = "/claim/{tabId}/{userId}")
+    public String claimTabByUser(@PathVariable Long tabId, @PathVariable Long userId) {
+        return tabService.claim(userId, tabId);
+    }
+
     @PostMapping
     public ResponseEntity<byte[]> createTabAndQR(@RequestBody String url) throws IOException, WriterException {
         // todo refactor to service

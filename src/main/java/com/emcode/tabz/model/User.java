@@ -5,9 +5,10 @@ import lombok.Data;
 
 import java.util.List;
 
-@Entity
+
 @Data
-public class AppUser {
+@Entity(name = "app_user")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +18,6 @@ public class AppUser {
     private String email;
     private String password;
 
-    @OneToMany(mappedBy = "appUser", orphanRemoval = true)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Tab> tabs;
 }

@@ -13,7 +13,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Merchant {
+public class Shop
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +25,6 @@ public class Merchant {
     private String token;
     private boolean active;
 
-    @OneToMany(mappedBy = "merchant")
+    @OneToMany(mappedBy = "shop")
     private List<Tab> tabs;
 }

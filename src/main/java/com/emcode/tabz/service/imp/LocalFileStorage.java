@@ -9,26 +9,31 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Service
 public class LocalFileStorage implements FileStorageManager {
 
     private static final Path STORAGE_LOCATION = Path.of("C:/tabz-data/storage");
+
     @Override
-    public String storeFile(Long tabId, Long shopId, MultipartFile file) {
+    public String storeFile(MultipartFile file)  {
 
         try {
             Files.createDirectories(STORAGE_LOCATION);
-            String fileName = shopId + "_" + tabId + ".pdf";
+            String fileName = UUID.randomUUID() + ".pdf";
             Path targetLocation = STORAGE_LOCATION.resolve(fileName);
 
-            InputStream inputStream = file.getInputStream();
-            Files.copy(inputStream, targetLocation, StandardCopyOption.REPLACE_EXISTING);
-
-            return targetLocation.toString();
+            try(InputStream inputStream = file.getInputStream()) {
+                Files.copy(inputStream, targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            }
+            return fileName;
 
         } catch (IOException e) {
             throw new RuntimeException("Could not store file: " + e.getMessage());
         }
+
     }
+
+
 }

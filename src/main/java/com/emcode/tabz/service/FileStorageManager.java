@@ -4,5 +4,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileStorageManager {
 
-    String storeFile(Long tabId, Long shopId, MultipartFile file);
+//    String storeFile(Long tabId, Long shopId, MultipartFile file);
+    String storeFile(MultipartFile file);
 }

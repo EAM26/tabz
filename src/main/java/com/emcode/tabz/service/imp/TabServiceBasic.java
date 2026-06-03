@@ -9,6 +9,7 @@ import com.emcode.tabz.service.TabService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
 @Service
@@ -26,13 +27,40 @@ public class TabServiceBasic implements TabService {
 
     @Override
     public String createTab(MultipartFile file, Long shopId) {
-        Shop shop = shopRepo.findById(shopId).orElseThrow(()
+        validateFile(file);
+        Shop shop = findShop(shopId);
+
+        String fileName = storageManager.storeFile(file);
+
+        return saveTab(shop, fileName).getFileName();
+    }
+
+    private Shop findShop(Long shopId) {
+        return shopRepo.findById(shopId).orElseThrow(()
                 -> new NoSuchElementException("No shop found with id: " + shopId));
+    }
+
+    private void validateFile(MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("File is empty");
+        }
+        String contentType = file.getContentType();
+        if (!"application/pdf".equals(contentType)) {
+            throw new IllegalArgumentException("Only PDF files are allowed");
+        }
+        String originalName = file.getOriginalFilename();
+        if (originalName == null || !originalName.endsWith(".pdf")) {
+            throw new IllegalArgumentException("File must have a .pdf extension");
+        }
+    }
+
+    private Tab saveTab(Shop shop, String fileName) {
         Tab tab = new Tab();
         tab.setShop(shop);
-        Tab savedTab = tabRepo.save(tab);
-
-        return storageManager.storeFile(shopId, savedTab.getId(), file);
+        tab.setFileName(fileName);
+        LocalDateTime createdAt = LocalDateTime.now();
+        tab.setCreatedAt(createdAt);
+        return tabRepo.save(tab);
     }
 
 

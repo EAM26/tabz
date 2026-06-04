@@ -9,9 +9,12 @@ import com.emcode.tabz.repository.TabRepo;
 import com.emcode.tabz.repository.UserRepo;
 import com.emcode.tabz.service.FileStorageManager;
 import com.emcode.tabz.service.TabService;
+import com.emcode.tabz.util.QRGenerator;
+import com.google.zxing.WriterException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
@@ -22,23 +25,31 @@ public class TabServiceBasic implements TabService {
     private final TabRepo tabRepo;
     private final ShopRepo shopRepo;
     private final UserRepo userRepo;
+    private final QRGenerator qrGenerator;
 
-    public TabServiceBasic(FileStorageManager storageManager, TabRepo tabRepo, ShopRepo shopRepo, UserRepo userRepo) {
+    public TabServiceBasic(FileStorageManager storageManager, TabRepo tabRepo, ShopRepo shopRepo, UserRepo userRepo, QRGenerator qrGenerator) {
         this.storageManager = storageManager;
         this.tabRepo = tabRepo;
         this.shopRepo = shopRepo;
         this.userRepo = userRepo;
+        this.qrGenerator = qrGenerator;
     }
 
     @Override
-    public String createTab(MultipartFile file, Long shopId) {
+    public byte[] createTab(MultipartFile file, Long shopId) {
         validateFile(file);
         Shop shop = findShop(shopId);
 
         String fileName = storageManager.storeFile(file);
 
         Tab savedTab =  saveTab(shop, fileName);
-        return createEndpointForClaim(savedTab.getId());
+        String endpoint = createEndpointForClaim(savedTab.getId());
+
+        try {
+            return qrGenerator.generateQRCode(endpoint, 300, 300);
+        } catch (IOException | WriterException e) {
+            throw new RuntimeException("Could not generate QR code: " + e.getMessage(), e);
+        }
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.emcode.tabz.service.FileStorageManager;
 import com.emcode.tabz.service.TabService;
 import com.emcode.tabz.util.QRGenerator;
 import com.google.zxing.WriterException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,13 +27,16 @@ public class TabServiceBasic implements TabService {
     private final ShopRepo shopRepo;
     private final UserRepo userRepo;
     private final QRGenerator qrGenerator;
+    private final String baseUrl;
 
-    public TabServiceBasic(FileStorageManager storageManager, TabRepo tabRepo, ShopRepo shopRepo, UserRepo userRepo, QRGenerator qrGenerator) {
+    public TabServiceBasic(FileStorageManager storageManager, TabRepo tabRepo, ShopRepo shopRepo, UserRepo userRepo,
+                           QRGenerator qrGenerator, @Value("${app.base-url}") String baseUrl) {
         this.storageManager = storageManager;
         this.tabRepo = tabRepo;
         this.shopRepo = shopRepo;
         this.userRepo = userRepo;
         this.qrGenerator = qrGenerator;
+        this.baseUrl = baseUrl;
     }
 
     @Override
@@ -107,7 +111,7 @@ public class TabServiceBasic implements TabService {
     }
 
     private String createEndpointForClaim(Long tabId) {
-        return  "http://localhost:8080/api/tab/claim/" + tabId;
+        return  baseUrl + "/tab/" + tabId + "/claim-page";
     }
 
 

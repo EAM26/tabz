@@ -34,9 +34,28 @@ public class ShopServiceBasic implements ShopService {
     }
 
     @Override
-    public Long createShop(ShopRequest shopRequest) {
-        Shop savedShop = shopRepo.save(shopMapper.mapToEntity(shopRequest));
-        return savedShop.getId(); // todo: change returntype to response
+    public ShopResponse createShop(ShopRequest shopRequest) {
+        Shop savedShop = shopRepo.save(createShopEntity(shopRequest));
+        return createResponse(savedShop);
+    }
+
+    private ShopResponse createResponse(Shop shop) {
+        return new ShopResponse(
+                shop.getId(),
+                shop.getName(),
+                shop.getEmail(),
+                shop.getToken(),
+                shop.isActive()
+        );
+    }
+
+    private Shop createShopEntity(ShopRequest request) {
+        return Shop.builder()
+                .name(request.name())
+                .email(request.email())
+                .token(request.token())
+                .active(request.active())
+                .build();
     }
 
 }

@@ -7,7 +7,7 @@ public interface ShopService {
 
     ShopResponse getShopById(Long id);
 
-    Long createShop(ShopRequest shopRequest);
+    ShopResponse createShop(ShopRequest shopRequest);
 
 
 }

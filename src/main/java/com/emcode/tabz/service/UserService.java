@@ -6,4 +6,6 @@ import com.emcode.tabz.dto.UserResponse;
 public interface UserService {
 
     UserResponse createUser(UserRequest userRequest);
+
+    UserResponse getUserById(Long id);
 }

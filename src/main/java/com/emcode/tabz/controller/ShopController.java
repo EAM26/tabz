@@ -5,6 +5,9 @@ import com.emcode.tabz.dto.ShopResponse;
 import com.emcode.tabz.service.ShopService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/shop")
@@ -22,8 +25,13 @@ public class ShopController {
     }
 
     @PostMapping
-    public Long createShop(@RequestBody ShopRequest shopRequest) {
-        return shopService.createShop(shopRequest);
-        // todo change return type to ResponseEntity <response>
+    public ResponseEntity<ShopResponse> createShop(@RequestBody ShopRequest shopRequest) {
+        ShopResponse response = shopService.createShop(shopRequest);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(response.id())
+                .toUri();
+        return ResponseEntity.created(location).body(response);
     }
 }

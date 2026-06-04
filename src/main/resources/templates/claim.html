@@ -1,10 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bon claimen</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            background: #f5f5f5;
+        }
+        .btn {
+            padding: 20px 40px;
+            font-size: 22px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .btn-claim   { background: green; color: white; }
+        .btn-noclaim { background: red;   color: white; }
+        #result {
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-$END$
+
+<h1>Wil je de bon claimen?</h1>
+
+<button class="btn btn-claim"   onclick="sendClaim(true)">CLAIM</button>
+<button class="btn btn-noclaim" onclick="sendClaim(false)">NIET CLAIMEN</button>
+
+<p id="result"></p>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const tabId = /*[[${tabId}]]*/ 0;
+    /*]]>*/
+
+    function sendClaim(claimValue) {
+        fetch(`/api/tab/claim/${tabId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: 1, claim: claimValue })
+        })
+            .then(response => response.text())
+            .then(text => {
+                document.getElementById('result').textContent = text;
+
+                // disable buttons after choice
+                document.querySelectorAll('.btn').forEach(btn => btn.disabled = true);
+            });
+    }
+</script>
+
 </body>
 </html>

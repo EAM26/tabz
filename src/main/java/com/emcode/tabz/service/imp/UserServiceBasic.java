@@ -7,6 +7,8 @@ import com.emcode.tabz.repository.UserRepo;
 import com.emcode.tabz.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class UserServiceBasic implements UserService {
 
@@ -18,11 +20,17 @@ public class UserServiceBasic implements UserService {
 
     @Override
     public UserResponse createUser(UserRequest userRequest) {
-        User savedUser = userRepo.save(createEntity(userRequest));
+        User savedUser = userRepo.save(createUserEntity(userRequest));
         return createResponse(savedUser);
     }
 
-    private User createEntity(UserRequest req) {
+    @Override
+    public UserResponse getUserById(Long id) {
+        User user =  userRepo.findById(id).orElseThrow(() -> new NoSuchElementException("No user found with id: " + id));
+        return createResponse(user);
+    }
+
+    private User createUserEntity(UserRequest req) {
         System.out.println(req.username());
         User user = new User();
         user.setUsername(req.username());

@@ -1,6 +1,6 @@
 # Tabz
 
-A digital receipt app. Upload a PDF receipt via Postman,
+A digital receipt app. Shopowner uploads a PDF receipt (via Postman),
 a QR code is generated. Customer scans the QR code and claims the receipt.
 
 ## Tech stack
@@ -9,9 +9,10 @@ a QR code is generated. Customer scans the QR code and claims the receipt.
 - Spring Data JPA
 - Thymeleaf
 - ZXing (QR code generation)
-- H2
+- Postgres
 
 ## Run locally
 1. Clone the repo
 2. Set `app.base-url` in `application.properties`
-3. Run with `./mvnw spring-boot:run`
+3. Setup postgres database: tabz
+4. Run with `./mvnw spring-boot:run`

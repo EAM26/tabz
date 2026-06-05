@@ -48,7 +48,7 @@ public class ShopServiceBasic implements ShopService {
                 .name(request.name())
                 .email(request.email())
                 .token(request.token())
-                .active(request.active())
+                .active(true)
                 .build();
     }
 

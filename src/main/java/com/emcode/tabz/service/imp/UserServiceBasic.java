@@ -5,6 +5,7 @@ import com.emcode.tabz.dto.UserResponse;
 import com.emcode.tabz.model.User;
 import com.emcode.tabz.repository.UserRepo;
 import com.emcode.tabz.service.UserService;
+import com.emcode.tabz.util.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -13,40 +14,25 @@ import java.util.NoSuchElementException;
 public class UserServiceBasic implements UserService {
 
     private final UserRepo userRepo;
+    private final ModelMapper mapper;
 
-    public UserServiceBasic(UserRepo userRepo) {
+    public UserServiceBasic(UserRepo userRepo, ModelMapper mapper) {
         this.userRepo = userRepo;
+        this.mapper = mapper;
     }
 
     @Override
     public UserResponse createUser(UserRequest userRequest) {
-        User savedUser = userRepo.save(createUserEntity(userRequest));
-        return createResponse(savedUser);
+        User savedUser = userRepo.save(mapper.createUserEntity(userRequest));
+        return mapper.createUserResponse(savedUser);
     }
 
     @Override
     public UserResponse getUserById(Long id) {
         User user =  userRepo.findById(id).orElseThrow(() -> new NoSuchElementException("No user found with id: " + id));
-        return createResponse(user);
+        return mapper.createUserResponse(user);
     }
 
-    private User createUserEntity(UserRequest req) {
-        System.out.println(req.username());
-        User user = new User();
-        user.setUsername(req.username());
-        System.out.println(user.getUsername());
-        user.setEmail(req.email());
-        user.setPassword(req.password());
-        return user;
-    }
 
-    private UserResponse createResponse(User user) {
-        return new UserResponse(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getTabs()
-        );
-    }
 
 }

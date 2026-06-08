@@ -1,13 +1,12 @@
 package com.emcode.tabz.controller;
 
-import com.emcode.tabz.dto.UserRequest;
 import com.emcode.tabz.dto.UserResponse;
 import com.emcode.tabz.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/user")
@@ -19,17 +18,17 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
-        UserResponse response = userService.createUser(userRequest);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(response.id())
-                .toUri();
-
-        return ResponseEntity.created(location).body(response);
-    }
+//    @PostMapping
+//    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
+//        UserResponse response = userService.createUser(userRequest);
+//        URI location = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(response.id())
+//                .toUri();
+//
+//        return ResponseEntity.created(location).body(response);
+//    }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {

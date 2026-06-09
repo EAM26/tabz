@@ -27,16 +27,16 @@ public class TabServiceBasic implements TabService {
     private final ShopRepo shopRepo;
     private final UserRepo userRepo;
     private final QRGenerator qrGenerator;
-    private final String baseUrl;
+    private final String frontBaseUrl;
 
     public TabServiceBasic(FileStorageManager storageManager, TabRepo tabRepo, ShopRepo shopRepo, UserRepo userRepo,
-                           QRGenerator qrGenerator, @Value("${app.base-url}") String baseUrl) {
+                           QRGenerator qrGenerator, @Value("${app.front-base-url}") String frontBaseUrl) {
         this.storageManager = storageManager;
         this.tabRepo = tabRepo;
         this.shopRepo = shopRepo;
         this.userRepo = userRepo;
         this.qrGenerator = qrGenerator;
-        this.baseUrl = baseUrl;
+        this.frontBaseUrl = frontBaseUrl;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class TabServiceBasic implements TabService {
     @Override
     public String claim(Long tabId, User user, ClaimRequest request) {
         Tab tab = findTab(tabId);
-        if(request.claim()) {
+        if(request.isClaimed()) {
             tab.setUser(user);
             tab.setClaimed(true);
         } else {
@@ -109,7 +109,7 @@ public class TabServiceBasic implements TabService {
     }
 
     private String createEndpointForClaim(Long tabId) {
-        return  baseUrl + "/api/tab/" + tabId + "/claim-page";
+        return frontBaseUrl + "/api/tab/" + tabId + "/claim-page";
     }
 
 

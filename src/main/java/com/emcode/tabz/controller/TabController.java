@@ -27,8 +27,7 @@ public class TabController {
     }
 
     @PostMapping(value = "/claim/{tabId}")
-    public ResponseEntity<String> claimTabByUser(@PathVariable Long tabId, Authentication authentication,
-                                                 ClaimRequest request) {
+    public ResponseEntity<String> claimTabByUser(@PathVariable Long tabId, Authentication authentication, @RequestBody ClaimRequest request) {
         User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(tabService.claim(tabId, user, request));
     }

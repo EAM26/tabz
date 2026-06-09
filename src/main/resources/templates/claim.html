@@ -28,34 +28,34 @@
         }
     </style>
 </head>
-<body>
+<!--<body>-->
 
-<h1>Wil je de bon claimen?</h1>
+<!--<h1>Wil je de bon claimen?</h1>-->
 
-<button class="btn btn-claim"   onclick="sendClaim(true)">CLAIM</button>
-<button class="btn btn-noclaim" onclick="sendClaim(false)">NIET CLAIMEN</button>
+<!--<button class="btn btn-claim"   onclick="sendClaim(true)">CLAIM</button>-->
+<!--<button class="btn btn-noclaim" onclick="sendClaim(false)">NIET CLAIMEN</button>-->
 
-<p id="result"></p>
+<!--<p id="result"></p>-->
 
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    const tabId = /*[[${tabId}]]*/ 0;
-    /*]]>*/
+<!--<script th:inline="javascript">-->
+<!--    /*<![CDATA[*/-->
+<!--    const tabId = /*[[${tabId}]]*/ 0;-->
+<!--    /*]]>*/-->
 
-    function sendClaim(claimValue) {
-        fetch(`/api/tab/claim/${tabId}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: 1, claim: claimValue })
-        })
-            .then(response => response.text())
-            .then(text => {
-                document.getElementById('result').textContent = text;
+<!--    function sendClaim(claimValue) {-->
+<!--        fetch(`/api/tab/claim/${tabId}`, {-->
+<!--            method: 'POST',-->
+<!--            headers: { 'Content-Type': 'application/json' },-->
+<!--            body: JSON.stringify({ userId: 1, claim: claimValue })-->
+<!--        })-->
+<!--            .then(response => response.text())-->
+<!--            .then(text => {-->
+<!--                document.getElementById('result').textContent = text;-->
 
-                document.querySelectorAll('.btn').forEach(btn => btn.disabled = true);
-            });
-    }
-</script>
+<!--                document.querySelectorAll('.btn').forEach(btn => btn.disabled = true);-->
+<!--            });-->
+<!--    }-->
+<!--</script>-->
 
-</body>
+<!--</body>-->
 </html>

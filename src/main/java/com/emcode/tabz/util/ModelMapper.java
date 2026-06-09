@@ -12,10 +12,10 @@ public class ModelMapper {
     public User createUserEntity(UserRequest req) {
         User user = new User();
         user.setUsername(req.username());
-        if (req.role() != Role.ADMIN) {
-            user.setRole(Role.USER);
+        if (req.userRole() != Role.ADMIN) {
+            user.setUserRole(Role.USER);
         } else {
-            user.setRole(Role.ADMIN);
+            user.setUserRole(Role.ADMIN);
         }
         user.setEmail(req.email());
         return user;
@@ -26,7 +26,8 @@ public class ModelMapper {
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
-                user.getTabs()
+                user.getTabs(),
+                user.getUserRole()
         );
     }
 }

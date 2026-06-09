@@ -111,7 +111,7 @@ public class TabServiceBasic implements TabService {
     }
 
     private String createEndpointForClaim(Long tabId) {
-        return  baseUrl + "/tab/" + tabId + "/claim-page";
+        return  baseUrl + "/api/tab/" + tabId + "/claim-page";
     }
 
 

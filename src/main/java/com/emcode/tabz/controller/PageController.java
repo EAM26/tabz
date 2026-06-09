@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class PageController {
 
-    @GetMapping("/tab/{tabId}/claim-page")
+    @GetMapping("/api/tab/{tabId}/claim-page")
     public String claimPage(@PathVariable Long tabId, Model model) {
         model.addAttribute("tabId", tabId);
         return "claim";

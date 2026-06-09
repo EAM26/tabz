@@ -1,10 +1,14 @@
 package com.emcode.tabz.util;
 
+import com.emcode.tabz.dto.TabResponse;
 import com.emcode.tabz.dto.UserRequest;
 import com.emcode.tabz.dto.UserResponse;
 import com.emcode.tabz.model.Role;
+import com.emcode.tabz.model.Tab;
 import com.emcode.tabz.model.User;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ModelMapper {
@@ -22,12 +26,22 @@ public class ModelMapper {
     }
 
     public UserResponse createUserResponse(User user) {
+        List<TabResponse> tabs =  user.getTabs().stream().map(this::createTabResponse).toList();
         return new UserResponse(
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
-                user.getTabs(),
+                tabs,
                 user.getUserRole()
+        );
+    }
+
+    public TabResponse createTabResponse(Tab tab) {
+        return new TabResponse(
+                tab.getId(),
+                tab.getShop().getId(),
+                tab.getFileName(),
+                tab.getCreatedAt()
         );
     }
 }

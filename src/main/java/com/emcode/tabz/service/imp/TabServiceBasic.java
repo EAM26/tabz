@@ -57,17 +57,15 @@ public class TabServiceBasic implements TabService {
     }
 
     @Override
-    public String claim(Long tabId, ClaimRequest request) {
+    public String claim(Long tabId, User user, ClaimRequest request) {
         Tab tab = findTab(tabId);
         if(request.claim()) {
-            User user = findUser(request.userId());
             tab.setUser(user);
             tab.setClaimed(true);
         } else {
             tab.setUser(null);
             tab.setClaimed(false);
         }
-
         tabRepo.save(tab);
         return tab.isClaimed() ? "Tab claimed" : "Tab unclaimed";
     }

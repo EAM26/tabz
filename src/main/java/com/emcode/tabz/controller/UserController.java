@@ -28,6 +28,7 @@ public class UserController {
 
     @GetMapping(value = "/me")
     public ResponseEntity<UserResponse> getLoggedInUser(Authentication authentication) {
+        System.out.println("controllermethod getLoggedInUser called");
         User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(userService.getUserById(user.getId()));
 

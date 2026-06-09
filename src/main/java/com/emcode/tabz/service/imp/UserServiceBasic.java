@@ -29,6 +29,7 @@ public class UserServiceBasic implements UserService {
 
     @Override
     public UserResponse getUserById(Long id) {
+        System.out.println("service method getUserById called");
         User user =  userRepo.findById(id).orElseThrow(() -> new NoSuchElementException("No user found with id: " + id));
         return mapper.createUserResponse(user);
     }

@@ -22,7 +22,9 @@ public class Shop
 
     private String name;
     private String email;
-    private String token;
+
+    @Column(name = "token_hash")
+    private String tokenHash;
     private boolean active;
 
     @OneToMany(mappedBy = "shop")

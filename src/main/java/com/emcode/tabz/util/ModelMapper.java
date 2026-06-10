@@ -1,9 +1,8 @@
 package com.emcode.tabz.util;
 
-import com.emcode.tabz.dto.TabResponse;
-import com.emcode.tabz.dto.UserRequest;
-import com.emcode.tabz.dto.UserResponse;
+import com.emcode.tabz.dto.*;
 import com.emcode.tabz.model.Role;
+import com.emcode.tabz.model.Shop;
 import com.emcode.tabz.model.Tab;
 import com.emcode.tabz.model.User;
 import org.springframework.stereotype.Component;
@@ -34,6 +33,25 @@ public class ModelMapper {
                 tabs,
                 user.getUserRole()
         );
+    }
+
+    public ShopResponse createShopResponse(Shop shop) {
+        return new ShopResponse(
+                shop.getId(),
+                shop.getName(),
+                shop.getEmail(),
+                shop.getTokenHash(),
+                shop.isActive()
+        );
+    }
+
+    public Shop createShopEntity(ShopRequest request) {
+        return Shop.builder()
+                .name(request.name())
+                .email(request.email())
+                .tokenHash(request.tokenHash())
+                .active(true)
+                .build();
     }
 
     public TabResponse createTabResponse(Tab tab) {

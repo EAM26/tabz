@@ -29,4 +29,9 @@ public class Shop
 
     @OneToMany(mappedBy = "shop")
     private List<Tab> tabs;
+
+    @Override
+    public String toString() {
+        return "Shop{id=" + id + ", name='" + name + "', email='" + email + "'}";
+    }
 }

@@ -67,20 +67,20 @@ public class TabServiceBasic implements TabService {
         return tab.isClaimed() ? "Tab claimed" : "Tab unclaimed";
     }
 
-    private User findUser(Long userId) {
-        return userRepo.findById(userId).orElseThrow(()
-                -> new NoSuchElementException("No user found with id " + userId));
-    }
+//    private User findUser(Long userId) {
+//        return userRepo.findById(userId).orElseThrow(()
+//                -> new NoSuchElementException("No user found with id " + userId));
+//    }
 
     private Tab findTab(Long tabId) {
         return tabRepo.findById(tabId).orElseThrow(()
                 -> new NoSuchElementException("No tab found with id: " + tabId));
     }
 
-    private Shop findShop(Long shopId) {
-        return shopRepo.findById(shopId).orElseThrow(()
-                -> new NoSuchElementException("No shop found with id: " + shopId));
-    }
+//    private Shop findShop(Long shopId) {
+//        return shopRepo.findById(shopId).orElseThrow(()
+//                -> new NoSuchElementException("No shop found with id: " + shopId));
+//    }
 
     private void validateFile(MultipartFile file) {
         if (file.isEmpty()) {

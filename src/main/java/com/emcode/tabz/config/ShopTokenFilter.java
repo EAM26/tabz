@@ -30,7 +30,6 @@ public class ShopTokenFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        // Alleen actief voor het upload endpoint
         if (!request.getRequestURI().startsWith("/api/tab/shop")) {
             filterChain.doFilter(request, response);
             return;
@@ -45,8 +44,6 @@ public class ShopTokenFilter extends OncePerRequestFilter {
         }
 
         String rawToken = authHeader.substring(7);
-
-        // Zoek alle shops op en check welke shop bij deze token hoort
         List<Shop> shops = shopRepo.findAll();
         Shop matchedShop = shops.stream()
                 .filter(shop -> passwordEncoder.matches(rawToken, shop.getTokenHash()))
@@ -59,7 +56,6 @@ public class ShopTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Zet de shop als authenticated principal in de SecurityContext
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
                         matchedShop,

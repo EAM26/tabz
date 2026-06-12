@@ -5,51 +5,53 @@ import com.emcode.tabz.dto.ShopResponse;
 import com.emcode.tabz.model.Shop;
 import com.emcode.tabz.repository.ShopRepo;
 import com.emcode.tabz.service.ShopService;
+import com.emcode.tabz.util.ModelMapper;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 @Primary
 public class ShopServiceBasic implements ShopService {
 
     private final ShopRepo shopRepo;
+    private final ModelMapper mapper;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public ShopServiceBasic(ShopRepo shopRepo) {
+    public ShopServiceBasic(ShopRepo shopRepo, ModelMapper mapper, BCryptPasswordEncoder passwordEncoder) {
         this.shopRepo = shopRepo;
+        this.mapper = mapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public ShopResponse getShopById(Long id) {
         Shop shop =  shopRepo.findById(id).orElseThrow(() -> new NoSuchElementException("No shop found with id: " + id));
-        return createResponse(shop);
+        return mapper.createShopResponse(shop);
 
     }
 
     @Override
     public ShopResponse createShop(ShopRequest shopRequest) {
-        Shop savedShop = shopRepo.save(createShopEntity(shopRequest));
-        return createResponse(savedShop);
+        Shop shop = mapper.createShopEntity(shopRequest);
+
+        String rawToken = generateToken();
+        shop.setTokenHash(hashToken(rawToken));
+
+        Shop savedShop = shopRepo.save(shop);
+        return mapper.createShopResponse(savedShop, rawToken);
     }
 
-    private ShopResponse createResponse(Shop shop) {
-        return new ShopResponse(
-                shop.getId(),
-                shop.getName(),
-                shop.getEmail(),
-                shop.getToken(),
-                shop.isActive()
-        );
+    private String generateToken() {
+        return UUID.randomUUID().toString();
     }
 
-    private Shop createShopEntity(ShopRequest request) {
-        return Shop.builder()
-                .name(request.name())
-                .email(request.email())
-                .token(request.token())
-                .active(true)
-                .build();
+    private String hashToken(String token) {
+        return passwordEncoder.encode(token);
     }
+
 
 }

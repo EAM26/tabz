@@ -4,9 +4,7 @@ import com.emcode.tabz.dto.ClaimRequest;
 import com.emcode.tabz.model.Shop;
 import com.emcode.tabz.model.Tab;
 import com.emcode.tabz.model.User;
-import com.emcode.tabz.repository.ShopRepo;
 import com.emcode.tabz.repository.TabRepo;
-import com.emcode.tabz.repository.UserRepo;
 import com.emcode.tabz.service.FileStorageManager;
 import com.emcode.tabz.service.TabService;
 import com.emcode.tabz.util.QRGenerator;
@@ -24,28 +22,21 @@ public class TabServiceBasic implements TabService {
 
     private final FileStorageManager storageManager;
     private final TabRepo tabRepo;
-    private final ShopRepo shopRepo;
-    private final UserRepo userRepo;
     private final QRGenerator qrGenerator;
     private final String frontBaseUrl;
 
-    public TabServiceBasic(FileStorageManager storageManager, TabRepo tabRepo, ShopRepo shopRepo, UserRepo userRepo,
+    public TabServiceBasic(FileStorageManager storageManager, TabRepo tabRepo,
                            QRGenerator qrGenerator, @Value("${app.front-base-url}") String frontBaseUrl) {
         this.storageManager = storageManager;
         this.tabRepo = tabRepo;
-        this.shopRepo = shopRepo;
-        this.userRepo = userRepo;
         this.qrGenerator = qrGenerator;
         this.frontBaseUrl = frontBaseUrl;
     }
 
     @Override
-    public byte[] createTab(MultipartFile file, Long shopId) {
+    public byte[] createTab(MultipartFile file, Shop shop) {
         validateFile(file);
-        Shop shop = findShop(shopId);
-
         String fileName = storageManager.storeFile(file);
-
         Tab savedTab =  saveTab(shop, fileName);
         String endpoint = createEndpointForClaim(savedTab.getId());
 
@@ -70,20 +61,20 @@ public class TabServiceBasic implements TabService {
         return tab.isClaimed() ? "Tab claimed" : "Tab unclaimed";
     }
 
-    private User findUser(Long userId) {
-        return userRepo.findById(userId).orElseThrow(()
-                -> new NoSuchElementException("No user found with id " + userId));
-    }
+//    private User findUser(Long userId) {
+//        return userRepo.findById(userId).orElseThrow(()
+//                -> new NoSuchElementException("No user found with id " + userId));
+//    }
 
     private Tab findTab(Long tabId) {
         return tabRepo.findById(tabId).orElseThrow(()
                 -> new NoSuchElementException("No tab found with id: " + tabId));
     }
 
-    private Shop findShop(Long shopId) {
-        return shopRepo.findById(shopId).orElseThrow(()
-                -> new NoSuchElementException("No shop found with id: " + shopId));
-    }
+//    private Shop findShop(Long shopId) {
+//        return shopRepo.findById(shopId).orElseThrow(()
+//                -> new NoSuchElementException("No shop found with id: " + shopId));
+//    }
 
     private void validateFile(MultipartFile file) {
         if (file.isEmpty()) {

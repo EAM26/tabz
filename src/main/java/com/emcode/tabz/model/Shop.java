@@ -22,9 +22,16 @@ public class Shop
 
     private String name;
     private String email;
-    private String token;
+
+    @Column(name = "token_hash", unique = true)
+    private String tokenHash;
     private boolean active;
 
     @OneToMany(mappedBy = "shop")
     private List<Tab> tabs;
+
+    @Override
+    public String toString() {
+        return "Shop{id=" + id + ", name='" + name + "', email='" + email + "'}";
+    }
 }

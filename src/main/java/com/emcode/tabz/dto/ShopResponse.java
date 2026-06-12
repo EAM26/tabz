@@ -4,7 +4,7 @@ public record ShopResponse(
         Long id,
         String name,
         String email,
-        String token,  // todo remove token
+        String tokenHash,
         boolean active
 ) {
 }

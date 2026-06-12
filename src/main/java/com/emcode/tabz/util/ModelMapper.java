@@ -35,6 +35,15 @@ public class ModelMapper {
         );
     }
 
+    public ShopResponse createShopResponse(Shop shop, String rawToken) {
+        return new ShopResponse(
+                shop.getId(),
+                shop.getName(),
+                shop.getEmail(),
+                rawToken,
+                shop.isActive()
+        );
+    }
     public ShopResponse createShopResponse(Shop shop) {
         return new ShopResponse(
                 shop.getId(),

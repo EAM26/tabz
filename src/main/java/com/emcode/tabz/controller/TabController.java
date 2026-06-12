@@ -1,6 +1,7 @@
 package com.emcode.tabz.controller;
 
 import com.emcode.tabz.dto.ClaimRequest;
+import com.emcode.tabz.model.Shop;
 import com.emcode.tabz.model.User;
 import com.emcode.tabz.service.TabService;
 import org.springframework.http.MediaType;
@@ -19,11 +20,12 @@ public class TabController {
         this.tabService = tabService;
     }
 
-    @PostMapping(value = "/shop/{shopId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<byte[]> createTab(@RequestParam("file") MultipartFile file, @PathVariable Long shopId) {
+    @PostMapping(value = "/shop", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<byte[]> createTab(@RequestParam("file") MultipartFile file, Authentication authentication) {
+        Shop shop = (Shop) authentication.getPrincipal();
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_PNG)
-                .body(tabService.createTab(file, shopId));
+                .body(tabService.createTab(file, shop));
     }
 
     @PostMapping(value = "/claim/{tabId}")

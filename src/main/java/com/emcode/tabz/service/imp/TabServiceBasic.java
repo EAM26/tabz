@@ -40,12 +40,9 @@ public class TabServiceBasic implements TabService {
     }
 
     @Override
-    public byte[] createTab(MultipartFile file, Long shopId) {
+    public byte[] createTab(MultipartFile file, Shop shop) {
         validateFile(file);
-        Shop shop = findShop(shopId);
-
         String fileName = storageManager.storeFile(file);
-
         Tab savedTab =  saveTab(shop, fileName);
         String endpoint = createEndpointForClaim(savedTab.getId());
 

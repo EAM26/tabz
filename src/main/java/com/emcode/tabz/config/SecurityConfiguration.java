@@ -23,6 +23,7 @@ public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final ShopTokenFilter shopTokenFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -31,8 +32,8 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/tab/**").permitAll() // todo set claim qr code url (user?)
-                        .requestMatchers("/api/tab/**").permitAll()
+                        .requestMatchers("/api/tab/shop").hasRole("SHOP")
+                        .requestMatchers("/api/tab/claim/**").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/shop/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/**").hasAnyAuthority("USER", "ADMIN")
@@ -40,6 +41,7 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
+                .addFilterBefore(shopTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

@@ -23,7 +23,7 @@ public class Shop
     private String name;
     private String email;
 
-    @Column(name = "token_hash")
+    @Column(name = "token_hash", unique = true)
     private String tokenHash;
     private boolean active;
 

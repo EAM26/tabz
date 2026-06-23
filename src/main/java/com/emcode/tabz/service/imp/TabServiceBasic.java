@@ -1,6 +1,7 @@
 package com.emcode.tabz.service.imp;
 
 import com.emcode.tabz.dto.ClaimRequest;
+import com.emcode.tabz.exception.TabAlreadyClaimedException;
 import com.emcode.tabz.model.Shop;
 import com.emcode.tabz.model.Tab;
 import com.emcode.tabz.model.User;
@@ -50,7 +51,11 @@ public class TabServiceBasic implements TabService {
     @Override
     public String claim(Long tabId, User user, ClaimRequest request) {
         Tab tab = findTab(tabId);
+
         if(request.isClaimed()) {
+            if(tab.isClaimed()) {
+                throw new TabAlreadyClaimedException("Tab is already claimed");
+            }
             tab.setUser(user);
             tab.setClaimed(true);
         } else {
@@ -58,7 +63,7 @@ public class TabServiceBasic implements TabService {
             tab.setClaimed(false);
         }
         tabRepo.save(tab);
-        return tab.isClaimed() ? "Tab claimed" : "Tab unclaimed";
+        return tab.isClaimed() ? "Tab claimed" : "Tab no claimed";
     }
 
 //    private User findUser(Long userId) {

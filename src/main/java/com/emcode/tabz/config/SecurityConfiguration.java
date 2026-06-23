@@ -34,9 +34,11 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/tab/shop").hasRole("SHOP")
                         .requestMatchers("/api/tab/claim/**").hasAnyAuthority("USER", "ADMIN")
-                        .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/tab/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/shop/**").hasAuthority("ADMIN")
-                        .requestMatchers("/api/**").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers("/api/user/me").authenticated()
+                        .requestMatchers("/api/user/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/**").hasAuthority( "ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -46,6 +48,8 @@ public class SecurityConfiguration {
 
         return http.build();
     }
+
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

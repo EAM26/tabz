@@ -9,6 +9,8 @@ import com.emcode.tabz.service.UserService;
 import com.emcode.tabz.util.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceBasic implements UserService {
 
@@ -20,11 +22,11 @@ public class UserServiceBasic implements UserService {
         this.mapper = mapper;
     }
 
-    @Override
-    public UserResponse createUser(UserRequest userRequest) {
-        User savedUser = userRepo.save(mapper.createUserEntity(userRequest));
-        return mapper.createUserResponse(savedUser);
-    }
+//    @Override
+//    public UserResponse createUser(UserRequest userRequest) {
+//        User savedUser = userRepo.save(mapper.createUserEntity(userRequest));
+//        return mapper.createUserResponse(savedUser);
+//    }
 
     @Override
     public UserResponse getUserById(Long id) {
@@ -33,6 +35,10 @@ public class UserServiceBasic implements UserService {
         return mapper.createUserResponse(user);
     }
 
+    @Override
+    public List<UserResponse> getAllUsers() {
+        return userRepo.findAll().stream().map(mapper::createUserResponse).toList();
+    }
 
 
 }

@@ -1,6 +1,7 @@
 package com.emcode.tabz.service.imp;
 
 import com.emcode.tabz.dto.ClaimRequest;
+import com.emcode.tabz.dto.TabResponse;
 import com.emcode.tabz.exception.TabAlreadyClaimedException;
 import com.emcode.tabz.model.Shop;
 import com.emcode.tabz.model.Tab;
@@ -8,6 +9,7 @@ import com.emcode.tabz.model.User;
 import com.emcode.tabz.repository.TabRepo;
 import com.emcode.tabz.service.FileStorageManager;
 import com.emcode.tabz.service.TabService;
+import com.emcode.tabz.util.ModelMapper;
 import com.emcode.tabz.util.QRGenerator;
 import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -25,13 +28,15 @@ public class TabServiceBasic implements TabService {
     private final TabRepo tabRepo;
     private final QRGenerator qrGenerator;
     private final String frontBaseUrl;
+    private final ModelMapper mapper;
 
     public TabServiceBasic(FileStorageManager storageManager, TabRepo tabRepo,
-                           QRGenerator qrGenerator, @Value("${app.front-base-url}") String frontBaseUrl) {
+                           QRGenerator qrGenerator, @Value("${app.front-base-url}") String frontBaseUrl, ModelMapper mapper) {
         this.storageManager = storageManager;
         this.tabRepo = tabRepo;
         this.qrGenerator = qrGenerator;
         this.frontBaseUrl = frontBaseUrl;
+        this.mapper = mapper;
     }
 
     @Override
@@ -64,6 +69,11 @@ public class TabServiceBasic implements TabService {
         }
         tabRepo.save(tab);
         return tab.isClaimed() ? "Tab claimed" : "Tab no claimed";
+    }
+
+    @Override
+    public List<TabResponse> getTabsByUserId(Long userId) {
+        return tabRepo.findAllByUserId(userId).stream().map(mapper::createTabResponse).toList();
     }
 
 //    private User findUser(Long userId) {

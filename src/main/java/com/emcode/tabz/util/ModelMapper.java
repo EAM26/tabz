@@ -25,7 +25,7 @@ public class ModelMapper {
     }
 
     public UserResponse createUserResponse(User user) {
-        List<TabResponse> tabs =  user.getTabs().stream().map(this::createTabResponse).toList();
+        List<TabResponse> tabs = user.getTabs().stream().map(this::createTabResponse).toList();
         return new UserResponse(
                 user.getId(),
                 user.getUsername(),
@@ -44,6 +44,7 @@ public class ModelMapper {
                 shop.isActive()
         );
     }
+
     public ShopResponse createShopResponse(Shop shop) {
         return new ShopResponse(
                 shop.getId(),
@@ -64,9 +65,12 @@ public class ModelMapper {
     }
 
     public TabResponse createTabResponse(Tab tab) {
+
+        Long userId = tab.getUser() == null ? null : tab.getUser().getId();
         return new TabResponse(
                 tab.getId(),
                 tab.getShop().getId(),
+                userId,
                 tab.getFileName(),
                 tab.getCreatedAt()
         );

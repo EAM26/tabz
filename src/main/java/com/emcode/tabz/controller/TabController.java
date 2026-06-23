@@ -1,6 +1,7 @@
 package com.emcode.tabz.controller;
 
 import com.emcode.tabz.dto.ClaimRequest;
+import com.emcode.tabz.dto.TabResponse;
 import com.emcode.tabz.model.Shop;
 import com.emcode.tabz.model.User;
 import com.emcode.tabz.service.TabService;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/tab")
@@ -32,6 +35,18 @@ public class TabController {
     public ResponseEntity<String> claimTabByUser(@PathVariable Long tabId, Authentication authentication, @RequestBody ClaimRequest request) {
         User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(tabService.claim(tabId, user, request));
+    }
+
+    @GetMapping(value = "/user")
+    public ResponseEntity<List<TabResponse>> getAllTabsByUserId(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return ResponseEntity.ok(tabService.getTabsByUserId(user.getId()));
+    }
+
+    @GetMapping(value = "/shop")
+    public ResponseEntity<List<TabResponse>> createTab(Authentication authentication) {
+        Shop shop = (Shop) authentication.getPrincipal();
+        return ResponseEntity.ok(tabService.getTabsByShopId(shop.getId()));
     }
 
 

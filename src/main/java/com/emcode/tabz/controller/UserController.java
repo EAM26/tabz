@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -28,9 +30,14 @@ public class UserController {
 
     @GetMapping(value = "/me")
     public ResponseEntity<UserResponse> getLoggedInUser(Authentication authentication) {
-        System.out.println("controllermethod getLoggedInUser called");
         User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(userService.getUserById(user.getId()));
-
     }
+
+    @GetMapping
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+
 }

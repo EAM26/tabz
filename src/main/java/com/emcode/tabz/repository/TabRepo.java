@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface TabRepo extends JpaRepository<Tab, Long> {
     List<Tab> findAllByUserId(Long userId);
+
+    List<Tab> findAllByShopId(Long shopId);
 }

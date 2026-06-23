@@ -15,4 +15,6 @@ public interface TabService {
     String claim(Long tabId, User user, ClaimRequest request);
 
     List<TabResponse> getTabsByUserId(Long id);
+
+    List<TabResponse> getTabsByShopId(Long id);
 }

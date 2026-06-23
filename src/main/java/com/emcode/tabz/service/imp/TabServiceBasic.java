@@ -76,6 +76,11 @@ public class TabServiceBasic implements TabService {
         return tabRepo.findAllByUserId(userId).stream().map(mapper::createTabResponse).toList();
     }
 
+    @Override
+    public List<TabResponse> getTabsByShopId(Long shopId) {
+        return tabRepo.findAllByShopId(shopId).stream().map(mapper::createTabResponse).toList();
+    }
+
 //    private User findUser(Long userId) {
 //        return userRepo.findById(userId).orElseThrow(()
 //                -> new NoSuchElementException("No user found with id " + userId));

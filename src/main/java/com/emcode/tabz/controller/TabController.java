@@ -43,5 +43,11 @@ public class TabController {
         return ResponseEntity.ok(tabService.getTabsByUserId(user.getId()));
     }
 
+    @GetMapping(value = "/shop")
+    public ResponseEntity<List<TabResponse>> createTab(Authentication authentication) {
+        Shop shop = (Shop) authentication.getPrincipal();
+        return ResponseEntity.ok(tabService.getTabsByShopId(shop.getId()));
+    }
+
 
 }

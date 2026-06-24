@@ -1,7 +1,7 @@
 package com.emcode.tabz.service.imp;
 
 import com.emcode.tabz.dto.ClaimRequest;
-import com.emcode.tabz.dto.TabResponse;
+import com.emcode.tabz.dto.UserTabResponse;
 import com.emcode.tabz.exception.TabAlreadyClaimedException;
 import com.emcode.tabz.model.Shop;
 import com.emcode.tabz.model.Tab;
@@ -72,13 +72,13 @@ public class TabServiceBasic implements TabService {
     }
 
     @Override
-    public List<TabResponse> getTabsByUserId(Long userId) {
-        return tabRepo.findAllByUserId(userId).stream().map(mapper::createTabResponse).toList();
+    public List<UserTabResponse> getTabsByUserId(Long userId) {
+        return tabRepo.findAllByUserId(userId).stream().map(mapper::createUserTabResponse).toList();
     }
 
     @Override
-    public List<TabResponse> getTabsByShopId(Long shopId) {
-        return tabRepo.findAllByShopId(shopId).stream().map(mapper::createTabResponse).toList();
+    public List<UserTabResponse> getTabsByShopId(Long shopId) {
+        return tabRepo.findAllByShopId(shopId).stream().map(mapper::createUserTabResponse).toList();
     }
 
 //    private User findUser(Long userId) {

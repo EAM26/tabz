@@ -25,7 +25,7 @@ public class ModelMapper {
     }
 
     public UserResponse createUserResponse(User user) {
-        List<TabResponse> tabs = user.getTabs().stream().map(this::createTabResponse).toList();
+        List<UserTabResponse> tabs = user.getTabs().stream().map(this::createUserTabResponse).toList();
         return new UserResponse(
                 user.getId(),
                 user.getUsername(),
@@ -64,10 +64,10 @@ public class ModelMapper {
                 .build();
     }
 
-    public TabResponse createTabResponse(Tab tab) {
+    public UserTabResponse createUserTabResponse(Tab tab) {
 
         Long userId = tab.getUser() == null ? null : tab.getUser().getId();
-        return new TabResponse(
+        return new UserTabResponse(
                 tab.getId(),
                 tab.getShop().getId(),
                 userId,

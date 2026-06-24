@@ -2,7 +2,7 @@ package com.emcode.tabz.dto;
 
 import java.time.LocalDateTime;
 
-public record TabResponse(
+public record UserTabResponse(
         Long id,
         Long shopId,
         Long userId,

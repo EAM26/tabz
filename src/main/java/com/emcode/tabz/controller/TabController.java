@@ -1,7 +1,7 @@
 package com.emcode.tabz.controller;
 
 import com.emcode.tabz.dto.ClaimRequest;
-import com.emcode.tabz.dto.TabResponse;
+import com.emcode.tabz.dto.UserTabResponse;
 import com.emcode.tabz.model.Shop;
 import com.emcode.tabz.model.User;
 import com.emcode.tabz.service.TabService;
@@ -38,13 +38,13 @@ public class TabController {
     }
 
     @GetMapping(value = "/user")
-    public ResponseEntity<List<TabResponse>> getAllTabsByUserId(Authentication authentication) {
+    public ResponseEntity<List<UserTabResponse>> getAllTabsByUserId(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(tabService.getTabsByUserId(user.getId()));
     }
 
     @GetMapping(value = "/shop")
-    public ResponseEntity<List<TabResponse>> createTab(Authentication authentication) {
+    public ResponseEntity<List<UserTabResponse>> createTab(Authentication authentication) {
         Shop shop = (Shop) authentication.getPrincipal();
         return ResponseEntity.ok(tabService.getTabsByShopId(shop.getId()));
     }

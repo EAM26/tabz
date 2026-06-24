@@ -66,12 +66,20 @@ public class ModelMapper {
 
     public UserTabResponse createUserTabResponse(Tab tab) {
 
-        Long userId = tab.getUser() == null ? null : tab.getUser().getId();
         return new UserTabResponse(
                 tab.getId(),
                 tab.getShop().getId(),
                 tab.getShop().getName(),
                 tab.getTotalAmount(),
+                tab.getCreatedAt()
+        );
+    }
+
+    public ShopTabResponse createShopTabResponse(Tab tab) {
+        return new ShopTabResponse(
+                tab.getId(),
+                tab.getTotalAmount(),
+                tab.isClaimed(),
                 tab.getCreatedAt()
         );
     }

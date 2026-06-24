@@ -6,11 +6,12 @@ import com.emcode.tabz.model.Shop;
 import com.emcode.tabz.model.User;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface TabService {
 
-    byte[] createTab(MultipartFile multipartFile, Shop shop);
+    byte[] createTab(MultipartFile multipartFile, BigDecimal totalAmount, Shop shop);
 
     String claim(Long tabId, User user, ClaimRequest request);
 

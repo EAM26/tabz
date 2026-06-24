@@ -70,8 +70,8 @@ public class ModelMapper {
         return new UserTabResponse(
                 tab.getId(),
                 tab.getShop().getId(),
-                userId,
-                tab.getFileName(),
+                tab.getShop().getName(),
+                tab.getTotalAmount(),
                 tab.getCreatedAt()
         );
     }

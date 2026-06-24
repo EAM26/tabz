@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -24,11 +25,13 @@ public class TabController {
     }
 
     @PostMapping(value = "/shop", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<byte[]> createTab(@RequestParam("file") MultipartFile file, Authentication authentication) {
+    public ResponseEntity<byte[]> createTab(@RequestParam("file") MultipartFile file,
+                                            @RequestParam BigDecimal totalAmount,
+                                            Authentication authentication) {
         Shop shop = (Shop) authentication.getPrincipal();
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_PNG)
-                .body(tabService.createTab(file, shop));
+                .body(tabService.createTab(file, totalAmount, shop));
     }
 
     @PostMapping(value = "/claim/{tabId}")

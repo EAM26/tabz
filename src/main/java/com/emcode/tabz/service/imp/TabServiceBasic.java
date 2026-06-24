@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -40,10 +41,10 @@ public class TabServiceBasic implements TabService {
     }
 
     @Override
-    public byte[] createTab(MultipartFile file, Shop shop) {
+    public byte[] createTab(MultipartFile file, BigDecimal totalAmount, Shop shop) {
         validateFile(file);
         String fileName = storageManager.storeFile(file);
-        Tab savedTab =  saveTab(shop, fileName);
+        Tab savedTab = saveTab(shop, totalAmount, fileName);
         String endpoint = createEndpointForClaim(savedTab.getId());
 
         try {
@@ -57,8 +58,8 @@ public class TabServiceBasic implements TabService {
     public String claim(Long tabId, User user, ClaimRequest request) {
         Tab tab = findTab(tabId);
 
-        if(request.isClaimed()) {
-            if(tab.isClaimed()) {
+        if (request.isClaimed()) {
+            if (tab.isClaimed()) {
                 throw new TabAlreadyClaimedException("Tab is already claimed");
             }
             tab.setUser(user);
@@ -110,10 +111,11 @@ public class TabServiceBasic implements TabService {
         }
     }
 
-    private Tab saveTab(Shop shop, String fileName) {
+    private Tab saveTab(Shop shop, BigDecimal totalAmount, String fileName) {
         Tab tab = new Tab();
         tab.setShop(shop);
         tab.setFileName(fileName);
+        tab.setTotalAmount(totalAmount);
         LocalDateTime createdAt = LocalDateTime.now();
         tab.setCreatedAt(createdAt);
         return tabRepo.save(tab);
@@ -122,8 +124,6 @@ public class TabServiceBasic implements TabService {
     private String createEndpointForClaim(Long tabId) {
         return frontBaseUrl + "/api/tab/" + tabId + "/claim-page";
     }
-
-
 
 
 }

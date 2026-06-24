@@ -3,6 +3,7 @@ package com.emcode.tabz.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,6 +17,7 @@ public class Tab {
     private String fileName;
     private LocalDateTime createdAt;
     private boolean claimed = false;
+    private BigDecimal totalAmount;
 
     @ManyToOne
     @JoinColumn(name = "shop_id")

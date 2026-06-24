@@ -1,6 +1,5 @@
 package com.emcode.tabz.service.imp;
 
-import com.emcode.tabz.dto.UserRequest;
 import com.emcode.tabz.dto.UserResponse;
 import com.emcode.tabz.exception.RecordNotFoundException;
 import com.emcode.tabz.model.User;
@@ -30,7 +29,6 @@ public class UserServiceBasic implements UserService {
 
     @Override
     public UserResponse getUserById(Long id) {
-        System.out.println("service method getUserById called");
         User user =  userRepo.findById(id).orElseThrow(() -> new RecordNotFoundException("No user found with id: " + id));
         return mapper.createUserResponse(user);
     }

@@ -1,7 +1,8 @@
 package com.emcode.tabz.controller;
 
 import com.emcode.tabz.dto.ClaimRequest;
-import com.emcode.tabz.dto.TabResponse;
+import com.emcode.tabz.dto.ShopTabResponse;
+import com.emcode.tabz.dto.UserTabResponse;
 import com.emcode.tabz.model.Shop;
 import com.emcode.tabz.model.User;
 import com.emcode.tabz.service.TabService;
@@ -11,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -24,11 +26,13 @@ public class TabController {
     }
 
     @PostMapping(value = "/shop", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<byte[]> createTab(@RequestParam("file") MultipartFile file, Authentication authentication) {
+    public ResponseEntity<byte[]> createTab(@RequestParam("file") MultipartFile file,
+                                            @RequestParam BigDecimal totalAmount,
+                                            Authentication authentication) {
         Shop shop = (Shop) authentication.getPrincipal();
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_PNG)
-                .body(tabService.createTab(file, shop));
+                .body(tabService.createTab(file, totalAmount, shop));
     }
 
     @PostMapping(value = "/claim/{tabId}")
@@ -37,14 +41,13 @@ public class TabController {
         return ResponseEntity.ok(tabService.claim(tabId, user, request));
     }
 
-    @GetMapping(value = "/user")
-    public ResponseEntity<List<TabResponse>> getAllTabsByUserId(Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        return ResponseEntity.ok(tabService.getTabsByUserId(user.getId()));
+    @GetMapping(value = "/user/{userId}")
+    public ResponseEntity<List<UserTabResponse>> getAllTabsByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(tabService.getTabsByUserId(userId));
     }
 
     @GetMapping(value = "/shop")
-    public ResponseEntity<List<TabResponse>> createTab(Authentication authentication) {
+    public ResponseEntity<List<ShopTabResponse>> createTab(Authentication authentication) {
         Shop shop = (Shop) authentication.getPrincipal();
         return ResponseEntity.ok(tabService.getTabsByShopId(shop.getId()));
     }

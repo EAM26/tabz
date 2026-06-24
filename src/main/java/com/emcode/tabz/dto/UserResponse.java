@@ -8,7 +8,7 @@ public record UserResponse(
         Long id,
         String username,
         String email,
-        List<TabResponse> tabs,
+        List<UserTabResponse> tabs,
         Role userRole
 ) {
 }

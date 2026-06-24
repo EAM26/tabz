@@ -41,10 +41,9 @@ public class TabController {
         return ResponseEntity.ok(tabService.claim(tabId, user, request));
     }
 
-    @GetMapping(value = "/user")
-    public ResponseEntity<List<UserTabResponse>> getAllTabsByUserId(Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        return ResponseEntity.ok(tabService.getTabsByUserId(user.getId()));
+    @GetMapping(value = "/user/{userId}")
+    public ResponseEntity<List<UserTabResponse>> getAllTabsByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(tabService.getTabsByUserId(userId));
     }
 
     @GetMapping(value = "/shop")

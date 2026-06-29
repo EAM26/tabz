@@ -25,6 +25,18 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
     private final ShopTokenFilter shopTokenFilter;
 
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        return http
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .cors(Customizer.withDefaults())
+//                .authorizeHttpRequests(auth -> auth
+//                        .anyRequest().permitAll()
+//                )
+//                // .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//                .build();
+//    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -34,7 +46,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/tab/shop").hasRole("SHOP")
                         .requestMatchers("/api/tab/claim/**").hasAnyAuthority("USER", "ADMIN")
-                        .requestMatchers("/api/tab/user").hasAuthority("ADMIN") // todo check me and userbyid
+                        .requestMatchers("/api/tab/user").hasAuthority("ADMIN")
                         .requestMatchers("/api/tab/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/shop/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/user/me").authenticated()

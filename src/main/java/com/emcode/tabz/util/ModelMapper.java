@@ -12,15 +12,15 @@ import java.util.List;
 @Component
 public class ModelMapper {
 
-    public User createUserEntity(UserRequest req) {
+    public User createUserEntity(UserRequest req, User loggedInUser) {
         User user = new User();
         user.setUsername(req.username());
-        if (req.userRole() != Role.ADMIN) {
+        user.setEmail(req.email());
+        if(loggedInUser == null || loggedInUser.getUserRole() != Role.ADMIN) {
             user.setUserRole(Role.USER);
         } else {
-            user.setUserRole(Role.ADMIN);
+            user.setUserRole(req.userRole());
         }
-        user.setEmail(req.email());
         return user;
     }
 

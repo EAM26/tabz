@@ -25,6 +25,7 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
     private final ShopTokenFilter shopTokenFilter;
 
+//    Switch off Security !!!!!
 //    @Bean
 //    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 //        return http
@@ -43,6 +44,7 @@ public class SecurityConfiguration {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/register-user-by-admin").hasAuthority("ADMIN")
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/tab/shop").hasRole("SHOP")
                         .requestMatchers("/api/tab/claim/**").hasAnyAuthority("USER", "ADMIN")

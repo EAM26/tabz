@@ -27,7 +27,11 @@ public class AuthenticationServiceBasic implements AuthenticationService {
 
 
     public AuthenticationResponse register(UserRequest request) {
-        User user = mapper.createUserEntity(request);
+        return register(request, null);
+    }
+
+    public AuthenticationResponse register(UserRequest request, User loggedInUser) {
+        User user = mapper.createUserEntity(request, loggedInUser);
 
         user.setPassword(passwordEncoder.encode(request.password()));
 
@@ -37,6 +41,8 @@ public class AuthenticationServiceBasic implements AuthenticationService {
                 .token(jwt)
                 .build();
     }
+
+
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(

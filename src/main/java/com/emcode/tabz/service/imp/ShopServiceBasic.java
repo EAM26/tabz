@@ -2,6 +2,7 @@ package com.emcode.tabz.service.imp;
 
 import com.emcode.tabz.dto.ShopRequest;
 import com.emcode.tabz.dto.ShopResponse;
+import com.emcode.tabz.dto.ShopResponseCreate;
 import com.emcode.tabz.model.Shop;
 import com.emcode.tabz.repository.ShopRepo;
 import com.emcode.tabz.service.ShopService;
@@ -30,12 +31,12 @@ public class ShopServiceBasic implements ShopService {
     @Override
     public ShopResponse getShopById(Long id) {
         Shop shop =  shopRepo.findById(id).orElseThrow(() -> new NoSuchElementException("No shop found with id: " + id));
-        return mapper.createShopResponse(shop);
+        return mapper.getShopResponse(shop);
 
     }
 
     @Override
-    public ShopResponse createShop(ShopRequest shopRequest) {
+    public ShopResponseCreate createShop(ShopRequest shopRequest) {
         Shop shop = mapper.createShopEntity(shopRequest);
 
         String rawToken = generateToken();

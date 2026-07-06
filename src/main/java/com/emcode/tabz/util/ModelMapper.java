@@ -35,8 +35,8 @@ public class ModelMapper {
         );
     }
 
-    public ShopResponse createShopResponse(Shop shop, String rawToken) {
-        return new ShopResponse(
+    public ShopResponseCreate createShopResponse(Shop shop, String rawToken) {
+        return new ShopResponseCreate(
                 shop.getId(),
                 shop.getName(),
                 shop.getEmail(),
@@ -45,7 +45,7 @@ public class ModelMapper {
         );
     }
 
-    public ShopResponse createShopResponse(Shop shop) {
+    public ShopResponse getShopResponse(Shop shop) {
         return new ShopResponse(
                 shop.getId(),
                 shop.getName(),

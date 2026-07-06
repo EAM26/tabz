@@ -46,10 +46,11 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/register-user-by-admin").hasAuthority("ADMIN")
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/tab/shop").hasRole("SHOP")
+                        .requestMatchers("/api/tab/shop").hasAuthority("SHOP")
                         .requestMatchers("/api/tab/claim/**").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/api/tab/user").hasAuthority("ADMIN")
                         .requestMatchers("/api/tab/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/shop/owner").hasAuthority("SHOP")
                         .requestMatchers("/api/shop/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/user/me").authenticated()
                         .requestMatchers("/api/user/**").hasAuthority("ADMIN")

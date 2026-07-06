@@ -2,12 +2,13 @@ package com.emcode.tabz.service;
 
 import com.emcode.tabz.dto.ShopRequest;
 import com.emcode.tabz.dto.ShopResponse;
+import com.emcode.tabz.dto.ShopResponseCreate;
 
 public interface ShopService {
 
     ShopResponse getShopById(Long id);
 
-    ShopResponse createShop(ShopRequest shopRequest);
+    ShopResponseCreate createShop(ShopRequest shopRequest);
 
 
 }

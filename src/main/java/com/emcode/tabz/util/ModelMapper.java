@@ -51,7 +51,8 @@ public class ModelMapper {
                 shop.getName(),
                 shop.getEmail(),
                 shop.getTokenHash(),
-                shop.isActive()
+                shop.isActive(),
+                shop.getTabs().stream().map(this::createShopTabResponse).toList()
         );
     }
 

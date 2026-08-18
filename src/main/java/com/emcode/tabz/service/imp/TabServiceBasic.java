@@ -13,7 +13,13 @@ import com.emcode.tabz.service.TabService;
 import com.emcode.tabz.util.ModelMapper;
 import com.emcode.tabz.util.QRGenerator;
 import com.google.zxing.WriterException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -83,22 +89,15 @@ public class TabServiceBasic implements TabService {
         return tabRepo.findAllByShopId(shopId).stream().map(mapper::createShopTabResponse).toList();
     }
 
-//    private User findUser(Long userId) {
-//        return userRepo.findById(userId).orElseThrow(()
-//                -> new NoSuchElementException("No user found with id " + userId));
-//    }
 
     private Tab findTab(Long tabId) {
         return tabRepo.findById(tabId).orElseThrow(()
                 -> new NoSuchElementException("No tab found with id: " + tabId));
     }
 
-//    private Shop findShop(Long shopId) {
-//        return shopRepo.findById(shopId).orElseThrow(()
-//                -> new NoSuchElementException("No shop found with id: " + shopId));
-//    }
-
     private void validateFile(MultipartFile file) {
+        System.out.println("Filename: " + file.getOriginalFilename());
+        System.out.println("Content type: " + file.getContentType());
         if (file.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
         }
@@ -110,6 +109,25 @@ public class TabServiceBasic implements TabService {
         if (originalName == null || !originalName.endsWith(".pdf")) {
             throw new IllegalArgumentException("File must have a .pdf extension");
         }
+    }
+
+    public ResponseEntity<Resource> downloadTab(Long tabId, User loggedInUser) {
+        Tab tab = tabRepo.findById(tabId)
+                .orElseThrow(() -> new EntityNotFoundException("Tab not found"));
+
+        if (tab.getUser() == null || !tab.getUser().getId().equals(loggedInUser.getId())) {
+            throw new AccessDeniedException("You are not allowed to download this tab");
+        }
+
+        Resource resource = storageManager.loadAsResource(tab.getFileName());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + tab.getFileName() + "\""
+                )
+                .body(resource);
     }
 
     private Tab saveTab(Shop shop, BigDecimal totalAmount, String fileName) {

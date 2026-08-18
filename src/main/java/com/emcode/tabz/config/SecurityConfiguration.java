@@ -49,6 +49,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/tab/shop").hasAuthority("SHOP")
                         .requestMatchers("/api/tab/claim/**").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/api/tab/user").hasAuthority("ADMIN")
+                        .requestMatchers("/api/tab/*/download").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/api/tab/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/shop/owner").hasAuthority("SHOP")
                         .requestMatchers("/api/shop/**").hasAuthority("ADMIN")

@@ -16,7 +16,7 @@ VALUES (1001,
         true,
         'hema@gmail.nl',
         'Hema',
-        '$2a$10$TKQN/7VDHG2rQLGJjt9Mz.24xHTB47oVqBdUj8ZNfxanpvxEmA2Rq');
+        '$2a$12$4t.ghdsFPKi5mkIJAxcZze2tiYqKR6SmRUUOUTdAAvW9y1Ma1FCMu');
 
 INSERT INTO tab (claimed, app_user_id, created_at, id, shop_id, file_name, total_amount)
 VALUES (true,

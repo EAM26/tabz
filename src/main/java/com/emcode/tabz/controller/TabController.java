@@ -6,6 +6,7 @@ import com.emcode.tabz.dto.UserTabResponse;
 import com.emcode.tabz.model.Shop;
 import com.emcode.tabz.model.User;
 import com.emcode.tabz.service.TabService;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -50,6 +51,12 @@ public class TabController {
     public ResponseEntity<List<ShopTabResponse>> createTab(Authentication authentication) {
         Shop shop = (Shop) authentication.getPrincipal();
         return ResponseEntity.ok(tabService.getTabsByShopId(shop.getId()));
+    }
+
+    @GetMapping("/{id}/download")
+    public ResponseEntity<Resource> downloadTab(@PathVariable Long id, Authentication authentication) {
+        User loggedInUser = (User) authentication.getPrincipal();
+        return tabService.downloadTab(id, loggedInUser);
     }
 
 

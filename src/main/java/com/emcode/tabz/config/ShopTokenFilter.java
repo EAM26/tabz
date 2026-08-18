@@ -30,7 +30,8 @@ public class ShopTokenFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        if (!request.getRequestURI().startsWith("/api/tab/shop")) {
+        String uri = request.getRequestURI();
+        if (!uri.startsWith("/api/tab/shop") && !uri.startsWith("/api/shop/owner")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -60,7 +61,7 @@ public class ShopTokenFilter extends OncePerRequestFilter {
                 new UsernamePasswordAuthenticationToken(
                         matchedShop,
                         null,
-                        List.of(new SimpleGrantedAuthority("ROLE_SHOP"))
+                        List.of(new SimpleGrantedAuthority("SHOP"))
                 );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
